@@ -1,17 +1,19 @@
 package com.app.runner;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Producer implements CommandLineRunner{
+public class Producer {
+	@Value("${kafka-topic-name}")
+	private String topicName;
+	
 	@Autowired
 	private KafkaTemplate<String, String> template;
 	
-	@Override
-	public void run(String... args) throws Exception {
-		template.send("my-tpc", "Hello Data");
+	public void send(String message){
+		template.send(topicName, message);
 	}
 }
